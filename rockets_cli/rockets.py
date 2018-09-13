@@ -5,15 +5,20 @@ import click
 import logging
 
 @click.command()
+# Add option for rocket id and year
+# Set default/ restrictions
 @click.option('--rocket_id', default="falcon9", type=click.Choice(["falcon1", "falcon9", "falconHeavy", "bfr"]), help="ID of the Rocket")
 @click.option('--year', default=2017,type=int, help="Year of launches to search through")
 def rockets(year, rocket_id):
     """CLI tool that returns launch data when given a valid RocketID and Year \n Valid Rockets: falcon1, falcon9, falconHeavy, bfr"""
+    # Logs to logrotate managed log file
     logging.basicConfig(filename='/var/log/rockets_cli/rockets.log', level=logging.INFO, format='%(asctime)s:%(levelname)s:%(message)s')
+    # Uses request to hit API
     r = requests.get("https://api.spacexdata.com/v2/launches?launch_year={0}&rocket_id={1}".format(year, rocket_id))
     logging.info("Requesting data for rocket {0} on year {1}".format(rocket_id, year))
     logging.info("Time taken: {0}".format(requests.get("https://api.spacexdata.com/v2/launches?launch_year={0}&rocket_id={1}".format(year, rocket_id)).elapsed.total_seconds()))
     data = json.loads(r.text)
+    # Pretty printing :) 
     if len(data) is 0:
        click.echo("No data was found for rocket: {0} in the year {1}".format(rocket_id, year))
     else:
