@@ -1,0 +1,50 @@
+---
+# Runs a series of commands against the instantiated container
+# to test functionality is as Expected
+
+- hosts: 127.0.0.1
+  gather_facts: false
+
+  tasks:
+
+    - name: add container to inventory
+      add_host:
+        name: rockets_cli
+        ansible_connection: docker
+      changed_when: false
+
+    - name: Running test command 1 'rockets --rocket_id=falcon9 --year=2016'
+      delegate_to: rockets_cli
+      command: rockets --rocket_id=falcon9 --year=2016
+      register: result
+
+    - debug: var=result.stdout_lines
+
+    - name: Running test command 2 'rockets --rocket_id=falcon9 --year=2012'
+      delegate_to: rockets_cli
+      command: rockets --rocket_id=falcon1 --year=2018
+      register: result2
+
+    - debug: var=result2.stdout_lines
+
+    - name: Running test command 3 'rockets --rocket_id=falcon9 --year=2012'
+      delegate_to: rockets_cli
+      command: rockets --rocket_id=falcon1 --year=ligma
+      register: result3
+      ignore_errors: True
+
+    - debug: var=result3.stdout_lines
+
+    - name: Running test command 4 'rockets --help'
+      delegate_to: rockets_cli
+      command: rockets --help
+      register: result4
+
+    - debug: var=result4.stdout_lines
+
+    - name: Running test command 5 'cat /var/log/rockets_cli/rockets.log'
+      delegate_to: rockets_cli
+      command: cat /var/log/rockets_cli/rockets.log
+      register: result5
+
+    - debug: var=result5.stdout_lines

@@ -1,0 +1,24 @@
+---
+# Playbook that checks the status of docker then
+# builds the cli's image, spinds up an instance
+# and runs a test command which is printed to stdout
+
+- hosts: 127.0.0.1
+  gather_facts: false
+
+  tasks:
+    - name: Check docker
+      service:
+        name: docker
+        state: started
+
+    - name: Build cli image
+      docker_image:
+        path: ../../
+        name: rockets_cli
+        tag: latest
+
+    - name: Run container from built image
+      docker_container:
+        name: rockets_cli
+        image: rockets_cli:latest

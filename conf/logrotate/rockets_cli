@@ -1,0 +1,7 @@
+/var/log/rockets_cli/rockets.log {
+    daily
+    missingok
+    rotate 14
+    notifempty
+    create 0640 root root
+}
