@@ -10,3 +10,6 @@ systemctl start docker
 
 echo "Running deployment playbook"
 ansible-playbook ansible/playbooks/deploy_rockets.yml --connection=local
+
+echo "Running tests"
+ansible-playbook ansible/playbooks/test_rockets.yml --connection=local
