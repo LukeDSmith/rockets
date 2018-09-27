@@ -1,7 +1,5 @@
 # rockets
 
-Here is my submission for JustParks technical assignment
-
 ## Prerequisites
 
 * ansible
@@ -9,7 +7,7 @@ Here is my submission for JustParks technical assignment
 * python
 * pip
 
-## Usgae
+## Usage
 
 To execute the cli automation simply run the
 `rocket-wrapper.sh`
